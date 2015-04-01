@@ -3,7 +3,8 @@ function DecodeController($scope) {
 	$scope.showtooltip = false;
 	$scope.dataHex = '3074257B80625F0000000002';
 
-	$scope.dataBin = Hex2Bin($scope.dataHex);
+	$scope.dataBin 		= Hex2Bin($scope.dataHex);
+	$scope.dataPattern	= getPattern($scope.dataBin);
 
 	$scope.hideTooltip = function () {
 		$scope.showtooltip = false;
@@ -16,23 +17,38 @@ function DecodeController($scope) {
 }
 
 
+function getPattern(binaryFull){
+	var header 	= binaryFull.substring(0, 8);
+	var pattern = null;
 
+	switch(header){
+		case "11001110":
+		 	pattern = "DOD-64";
+		 	break;
+		case "11001111":
+		 	pattern = "DOD-96";
+		 	break;
+		case "00110000":
+		 	pattern = "SGTIN-96";
+		 	break;
+		case "00110001":
+		 	pattern = "SSCC-96";
+		 	break;
+		case "00110010":
+		 	pattern = "GLN-96";
+		 	break;
+		case "00110011":
+		 	pattern = "GRAI-96";
+		 	break;
+		case "00110100":
+		 	pattern = "GIAI-96";
+		 	break;
+		case "00110101":
+		 	pattern = "GID-96";
+		 	break;
+	 	default:
+	 		pattern = null;
+	}
 
-//Useful Functions
-function checkBin(n){return/^[01]{1,64}$/.test(n)}
-function checkDec(n){return/^[0-9]{1,64}$/.test(n)}
-function checkHex(n){return/^[0-9A-Fa-f]{1,64}$/.test(n)}
-function pad(s,z){s=""+s;return s.length<z?pad("0"+s,z):s}
-function unpad(s){s=""+s;return s.replace(/^0+/,'')}
-
-//Decimal operations
-function Dec2Bin(n){if(!checkDec(n)||n<0)return 0;return n.toString(2)}
-function Dec2Hex(n){if(!checkDec(n)||n<0)return 0;return n.toString(16)}
-
-//Binary Operations
-function Bin2Dec(n){if(!checkBin(n))return 0;return parseInt(n,2).toString(10)}
-function Bin2Hex(n){if(!checkBin(n))return 0;return parseInt(n,2).toString(16)}
-
-//Hexadecimal Operations
-function Hex2Bin(n){if(!checkHex(n))return 0;return parseInt(n,16).toString(2)}
-function Hex2Dec(n){if(!checkHex(n))return 0;return parseInt(n,16).toString(10)}
+	return pattern;
+}
