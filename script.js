@@ -1,7 +1,8 @@
 function DecodeController($scope) {
 
 	$scope.showtooltip = false;
-	$scope.dataHex = '350002800004B362DFDC1C35';
+	$scope.dataHex = '3074257BF4625F8000000002';
+	//3074257BF4625F8000000002 / 30700048440663802E185523 / 350002800004B362DFDC1C35
 	
 	$scope.hideTooltip = function () {
 		$scope.showtooltip = false;
@@ -16,7 +17,7 @@ function DecodeController($scope) {
 		$scope.dataBin 		= Hex2Bin($scope.dataHex);
 		$scope.dataPattern	= GetPattern($scope.dataBin);
 		$scope.dataDecoded	= DecodeData($scope.dataHex)['value'];
-		$scope.EPC 			= DecodeData($scope.dataHex)['obj']
+		$scope.EPC 			= DecodeData($scope.dataHex)['obj'];
 	}
 }
 
@@ -161,7 +162,27 @@ function DecodeController($scope) {
 		// Item Reference (24-4); Serial Number (38)
 
 		var decoded = null;
-		return decoded;
+		var Filter 			= parseInt(Binary.substring(8, 11), 2);
+		var Partition 		= parseInt(Binary.substring(11, 14), 2);
+		var Limiter = getLimiter(Partition);
+		var CompanyPrefix 	= parseInt(Binary.substring(14, Limiter[1]+14), 2);
+		var ItemReference 	= parseInt(Binary.substring(Limiter[1]+14, (Limiter[2]+Limiter[1]+14)), 2);
+		var SerialNumber 	= parseInt(Binary.substring(58, 96), 2);
+
+		console.log("00110000-"+Binary.substring(8, 11)+"-"+Binary.substring(11, 14)+"-"+Binary.substring(14, Limiter[1]+14)+"-"+Binary.substring(Limiter[1]+14, (Limiter[2]+Limiter[1]+14))+"-"+Binary.substring(58, 96));
+
+		if (!isNaN(Filter) && !isNaN(Partition) && !isNaN(CompanyPrefix)){
+			decoded = "~b00800110000~n003"+Filter+"~n003"+Partition+"~n0"+Limiter[1]+""+CompanyPrefix+"~n0"+Limiter[2]+""+ItemReference+"~n038"+SerialNumber;	
+		}
+		var epc = {
+			Pattern: 'SGTIN-96 (Trade Item)',
+			Filter: Filter,
+			Partition: Partition,
+			CompanyPrefix: CompanyPrefix,
+			ItemReference: ItemReference,
+			SerialNumber: SerialNumber
+		};
+		return {value: decoded, obj: epc};
 	}
 	function SSCC96Decode(Binary){
 		var decoded = null;
@@ -197,4 +218,33 @@ function DecodeController($scope) {
 			SerialNumber: SerNum
 		};
 		return {value: decoded, obj: epc};
+	}
+
+	function getLimiter(Partition){
+		switch(Partition){
+			case 0:
+			 	Limiter = {1: 40, 2: 4};
+			 	break;
+			case 1:
+			 	Limiter = {1: 37, 2: 7};
+			 	break;
+			case 2:
+			 	Limiter = {1: 34, 2: 10};
+			 	break;
+			case 3:
+			 	Limiter = {1: 30, 2: 14};
+			 	break;
+			case 4:
+			 	Limiter = {1: 27, 2: 17};
+			 	break;
+			case 5:
+			 	Limiter = {1: 24, 2: 20};
+			 	break;
+			case 6:
+			 	Limiter = {1: 20, 2: 24};
+			 	break;
+		 	default:
+		 		Limiter = null;
+		}
+		return Limiter;
 	}
