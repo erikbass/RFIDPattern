@@ -13,21 +13,35 @@
 		<![endif]-->
 	</head>
 
-	<body ng-app ng-controller="DecodeController">
+	<body ng-app ng-controller="DecodeController" ng-init="Decode()">
 
 		<div id="main" ng-click="hideTooltip()">
 			<h3>Hexadecimal Encoded:</h3>
 			<div class="tooltip" ng-click="$event.stopPropagation()" ng-show="showtooltip">
-				<input type="text" ng-model="value" />
+				<input type="text" ng-model="dataHex" ng-change="Decode()" />
 			</div>
 
-			<p ng-click="toggleTooltip($event)">{{value}}</p>
+			<p ng-click="toggleTooltip($event)">{{dataHex}}</p>
 
 		</div>
 		
-		<div id="dataOriginal">
-			<h3>Data Decoded:</h3>
-			~b00800110000~n0033~n0035~n0240614141~n020100734~n0380002
+		<div id="dataOriginal" ng-show="dataHex.length > 0">
+			<div ng-show="dataDecoded != null">
+				<h3>Data Decoded:</h3>
+				<span id="dataDecoded">{{dataDecoded}}</span>
+			</div>
+			<br><br>
+			<div id="Bin" ng-show="dataBin != null">
+				<label>Binário: </label><br>
+				<span>{{dataBin}}</span>
+			</div>
+
+			<br>
+			<div id="Pattern">
+				<label>Pattern: </label><br>
+				<span ng-show="dataPattern != null">{{dataPattern}}</span>
+				<span ng-show="dataPattern == null">Pattern not found!</span>
+			</div>
 		</div>
 
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
