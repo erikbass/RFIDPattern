@@ -147,6 +147,37 @@ function DecodeController($scope) {
 	}
 
 /////////////////// DECODE PATTERN
+	function DOD64Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
+	function DOD96Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
+	function SGTIN96Decode(Binary){
+		// Header (8); Filter (3); Partition (3); Company Prefix (20-40);
+		// Item Reference (24-4); Serial Number (38)
+
+		var decoded = null;
+		return decoded;
+	}
+	function SSCC96Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
+	function GLN96Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
+	function GRAI96Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
+	function GIAI96Decode(Binary){
+		var decoded = null;
+		return decoded;
+	}
 	function GID96Decode(Binary){
 		//Header (b - 8); Manager Number (n - 28);
 		//Object Class (n - 24); Serial Number (n - 36)
@@ -158,6 +189,5 @@ function DecodeController($scope) {
 		if (!isNaN(ManNum) && !isNaN(ObjCl) && !isNaN(SerNum)){
 			decoded = "~b00800110101~n028"+ManNum+"~n024"+ObjCl+"~n036"+SerNum;	
 		}
-
 		return decoded;
 	}
