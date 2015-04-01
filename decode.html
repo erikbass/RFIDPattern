@@ -29,6 +29,48 @@
 			<div ng-show="dataDecoded != null">
 				<h3>Data Decoded:</h3>
 				<span id="dataDecoded">{{dataDecoded}}</span>
+
+				<table ng-show="dataPattern == 'GID-96'">
+					<thead>
+						<tr>
+							<th>Pattern</th>
+							<th>Manage Number</th>
+							<th>Object Class</th>
+							<th>Serial Number</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{EPC.Pattern}}</td>
+							<td>{{EPC.ManageNumber}}</td>
+							<td>{{EPC.ObjectClass}}</td>
+							<td>{{EPC.SerialNumber}}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<table ng-show="dataPattern == 'SGTIN-96'">
+					<thead>
+						<tr>
+							<th>Pattern</th>
+							<th>Filter</th>
+							<th>Partition</th>
+							<th>Company Prefix</th>
+							<th>Item Reference</th>
+							<th>Serial Number</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>{{EPC.Pattern}}</th>
+							<th>{{EPC.Filter}}</th>
+							<th>{{EPC.Partition}}</th>
+							<th>{{EPC.CompanyPrefix}}</th>
+							<th>{{EPC.ItemReference}}</th>
+							<th>{{EPC.SerialNumber}}</th>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<br><br>
 			<div id="Bin" ng-show="dataBin != null">
