@@ -124,3 +124,14 @@ p:before {
     font-size: 2em;
     padding: 1px 13px;
 }
+#dataOriginal table {
+	border-collapse: collapse;
+	width: 50%;
+	margin: 10px auto;
+}
+#dataOriginal td, #dataOriginal th {
+	border: 1px solid #CCC;
+}
+#dataOriginal th {
+	background-color: #e9e9e9;
+}
