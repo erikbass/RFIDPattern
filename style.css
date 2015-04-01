@@ -131,6 +131,7 @@ p:before {
 }
 #dataOriginal td, #dataOriginal th {
 	border: 1px solid #CCC;
+	text-align: center;
 }
 #dataOriginal th {
 	background-color: #e9e9e9;
