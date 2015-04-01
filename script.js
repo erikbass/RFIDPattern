@@ -15,7 +15,8 @@ function DecodeController($scope) {
 	$scope.Decode = function () {
 		$scope.dataBin 		= Hex2Bin($scope.dataHex);
 		$scope.dataPattern	= GetPattern($scope.dataBin);
-		$scope.dataDecoded	= DecodeData($scope.dataHex);
+		$scope.dataDecoded	= DecodeData($scope.dataHex)['value'];
+		$scope.EPC 			= DecodeData($scope.dataHex)['obj']
 	}
 }
 
@@ -189,5 +190,11 @@ function DecodeController($scope) {
 		if (!isNaN(ManNum) && !isNaN(ObjCl) && !isNaN(SerNum)){
 			decoded = "~b00800110101~n028"+ManNum+"~n024"+ObjCl+"~n036"+SerNum;	
 		}
-		return decoded;
+		var epc = {
+			Pattern: 'GID-96 (Unspecified)',
+			ManageNumber: ManNum,
+			ObjectClass: ObjCl,
+			SerialNumber: SerNum
+		};
+		return {value: decoded, obj: epc};
 	}
