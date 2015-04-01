@@ -2,11 +2,7 @@ function DecodeController($scope) {
 
 	$scope.showtooltip = false;
 	$scope.dataHex = '350002800004B362DFDC1C35';
-
-	$scope.dataBin 		= Hex2Bin($scope.dataHex);
-	$scope.dataPattern	= GetPattern($scope.dataBin);
-	$scope.dataDecoded	= DecodeData($scope.dataHex);
-
+	
 	$scope.hideTooltip = function () {
 		$scope.showtooltip = false;
 	}
@@ -14,6 +10,12 @@ function DecodeController($scope) {
 	$scope.toggleTooltip = function (e) {
 		e.stopPropagation ();
 		$scope.showtooltip = !$scope.showtooltip;
+	}
+
+	$scope.Decode = function () {
+		$scope.dataBin 		= Hex2Bin($scope.dataHex);
+		$scope.dataPattern	= GetPattern($scope.dataBin);
+		$scope.dataDecoded	= DecodeData($scope.dataHex);
 	}
 }
 
@@ -23,34 +25,36 @@ function DecodeController($scope) {
 		var Pattern = GetPattern(Bin);
 		var decoded = null;
 
-		switch(Pattern){
-			case "DOD-64":
-			 	decoded = DOD64Decode(Bin);
-			 	break;
-			case "DOD-96":
-			 	decoded = DOD96Decode(Bin);
-			 	break;
-			case "SGTIN-96":
-			 	decoded = SGTIN96Decode(Bin);
-			 	break;
-			case "SSCC-96":
-			 	decoded = SSCC96Decode(Bin);
-			 	break;
-			case "GLN-96":
-			 	decoded = GLN96Decode(Bin);
-			 	break;
-			case "GRAI-96":
-			 	decoded = GRAI96Decode(Bin);
-			 	break;
-			case "GIAI-96":
-			 	decoded = GIAI96Decode(Bin);
-			 	break;
-			case "GID-96":
-			 	decoded = GID96Decode(Bin);
-			 	break;
-		 	default:
-		 		decoded = null;
-		}
+		if (Pattern != null){
+			switch(Pattern){
+				case "DOD-64":
+				 	decoded = DOD64Decode(Bin);
+				 	break;
+				case "DOD-96":
+				 	decoded = DOD96Decode(Bin);
+				 	break;
+				case "SGTIN-96":
+				 	decoded = SGTIN96Decode(Bin);
+				 	break;
+				case "SSCC-96":
+				 	decoded = SSCC96Decode(Bin);
+				 	break;
+				case "GLN-96":
+				 	decoded = GLN96Decode(Bin);
+				 	break;
+				case "GRAI-96":
+				 	decoded = GRAI96Decode(Bin);
+				 	break;
+				case "GIAI-96":
+				 	decoded = GIAI96Decode(Bin);
+				 	break;
+				case "GID-96":
+				 	decoded = GID96Decode(Bin);
+				 	break;
+			 	default:
+			 		decoded = null;
+			}
+		}		
 
 		return decoded;
 	}
@@ -99,7 +103,7 @@ function DecodeController($scope) {
 	        accum = 0;
 	        for (k = 0; k < 4; k += 1) {
 	            if (part[k] !== '0' && part[k] !== '1') {
-	                return { valid: false };
+	                return null;
 	            }
 	            accum = accum * 2 + parseInt(part[k], 10);
 	        }
@@ -113,7 +117,7 @@ function DecodeController($scope) {
 	        accum = 0;
 	        for (k = 0; k <= i; k += 1) {
 	            if (s[k] !== '0' && s[k] !== '1') {
-	                return { valid: false };
+	                return null;
 	            }
 	            accum = accum * 2 + parseInt(s[k], 10);
 	        }
@@ -136,7 +140,7 @@ function DecodeController($scope) {
 	        if (lookupTable.hasOwnProperty(s[i])) {
 	            ret += lookupTable[s[i]];
 	        } else {
-	            return { valid: false };
+	            return null;
 	        }
 	    }
 	    return ret;
@@ -151,7 +155,9 @@ function DecodeController($scope) {
 		var ObjCl 	= parseInt(Binary.substring(36, 60), 2);
 		var SerNum 	= parseInt(Binary.substring(60, 96), 2);
 
-		decoded = "~b00800110101~n028"+ManNum+"~n024"+ObjCl+"~n036"+SerNum;
+		if (!isNaN(ManNum) && !isNaN(ObjCl) && !isNaN(SerNum)){
+			decoded = "~b00800110101~n028"+ManNum+"~n024"+ObjCl+"~n036"+SerNum;	
+		}
 
 		return decoded;
 	}
