@@ -141,3 +141,17 @@ function DecodeController($scope) {
 	    }
 	    return ret;
 	}
+
+/////////////////// DECODE PATTERN
+	function GID96Decode(Binary){
+		//Header (b - 8); Manager Number (n - 28);
+		//Object Class (n - 24); Serial Number (n - 36)
+		var decoded = null;
+		var ManNum 	= parseInt(Binary.substring(8, 36), 2);
+		var ObjCl 	= parseInt(Binary.substring(36, 60), 2);
+		var SerNum 	= parseInt(Binary.substring(60, 96), 2);
+
+		decoded = "~b00800110101~n028"+ManNum+"~n024"+ObjCl+"~n036"+SerNum;
+
+		return decoded;
+	}
