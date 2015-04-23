@@ -1,0 +1,87 @@
+<html lang="pt-br">
+
+	<head>
+		<meta charset="UTF-8"/>
+		<title>RFID Pattern - SERTTEL Reader</title>
+
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" />
+
+		<link href="style.css" rel="stylesheet" />
+
+		<!--[if lt IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<style type="text/css">
+			#main {
+    			height: 130px;
+    			padding-top: 72px;
+			}
+		</style>
+	</head>
+
+	<body ng-app ng-controller="DecodeController" ng-init="Decode()">
+
+		<div id="main" ng-click="hideTooltip()">
+			<h3>Decimal:</h3>
+			<div class="tooltip" ng-click="$event.stopPropagation()" ng-show="showtooltip">
+				<input type="text" ng-model="dataDec" ng-change="Decode()" />
+			</div>
+
+			<p ng-click="toggleTooltip($event)">{{dataDec}}</p>
+		</div>
+		
+		<div id="dataOriginal" ng-show="dataDec.length > 0">
+			<div> <!-- ng-show="dataDecoded != null"> -->
+
+				<table>
+					<thead>
+						<tr>
+							<th>Decimal (Written)</th>
+							<th>Decimal (Read)</th>
+							<th>Hex (Written)</th>
+							<th>Hex (Read)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{dataDecoded.DecWrited}}</td>
+							<td>{{dataDecoded.DecReaded}}</td>
+							<td>{{dataDecoded.HexWrited}}</td>
+							<td>{{dataDecoded.HexReaded}}</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<br><br>
+
+
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2"></th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="bits in arrayHex">
+						<tr>
+							<td>{{bits.Hex}}</td>
+							<td>{{bits.Bin}}</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2">CHECKSUM</td>
+						</tr>
+						<tr>
+							<td>{{checksum.Hex}}</td>
+							<td>{{checksum.Bin}}</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<script src="serttel.js"></script>
+	</body>
+</html>
