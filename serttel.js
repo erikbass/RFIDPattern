@@ -82,6 +82,8 @@ function DecodeController($scope) {
 
 		var Bin = Dec2Bin(keep);
 		var Hex = Bin2Hex(Bin);
+		if ((Hex.length % 2) != 0) { Hex = "0" + Hex; }
+		while (Bin.length < 8) Bin = "0" + Bin;
 
 		return { Bin: Bin, Hex: Hex};
 	}
